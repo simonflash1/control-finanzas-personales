@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Pencil, Trash } from 'lucide-react';
 import { toast } from "sonner";
-import { CirclePicker } from 'react-color';
+import { CirclePicker, ColorResult } from 'react-color';
 import { supabase } from "@/integrations/supabase/client";
 
 interface Account {
@@ -69,11 +70,11 @@ const Accounts = () => {
 
   type AccountType = typeof accountTypes[number]['value'];
 
-  const handleColorChange = (color: { hex: string }) => {
+  const handleColorChange = (color: ColorResult) => {
     setAccountColor(color.hex);
   };
 
-  const handleEditColorChange = (color: { hex: string }) => {
+  const handleEditColorChange = (color: ColorResult) => {
     setEditedAccountColor(color.hex);
   };
 
