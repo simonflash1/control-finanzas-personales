@@ -1,6 +1,8 @@
 
 import { NavLink } from "react-router-dom";
 import { useTheme } from "@/context/ThemeContext";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useAuth } from "@/hooks/useAuth";
 import {
   Sidebar,
   SidebarContent,
@@ -22,6 +24,8 @@ import {
 
 const AppSidebar = () => {
   const { theme } = useTheme();
+  const { signOut } = useAuth();
+  const isMobile = useIsMobile();
   
   const menuItems = [
     { to: "/", icon: Home, label: "Dashboard" },
@@ -46,7 +50,7 @@ const AppSidebar = () => {
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.to}>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton asChild tooltip={isMobile ? undefined : item.label}>
                 <NavLink 
                   to={item.to}
                   className={({ isActive }) => 
@@ -63,7 +67,10 @@ const AppSidebar = () => {
       </SidebarContent>
       <SidebarFooter>
         <div className="px-4 py-3">
-          <button className="flex items-center gap-3 w-full text-red-500 hover:text-red-600 transition-colors">
+          <button 
+            onClick={signOut}
+            className="flex items-center gap-3 w-full text-red-500 hover:text-red-600 transition-colors"
+          >
             <LogOut className="h-5 w-5" />
             <span>Logout</span>
           </button>

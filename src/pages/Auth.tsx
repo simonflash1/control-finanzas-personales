@@ -63,7 +63,7 @@ const Auth = () => {
   
   return (
     <div className="flex items-center justify-center min-h-screen bg-background p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md mx-auto">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">FinanceFlow</CardTitle>
           <CardDescription>Manage your finances with ease</CardDescription>
@@ -85,6 +85,7 @@ const Auth = () => {
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)} 
                     required 
+                    className="w-full"
                   />
                 </div>
                 <div className="space-y-2">
@@ -95,6 +96,7 @@ const Auth = () => {
                     value={password} 
                     onChange={(e) => setPassword(e.target.value)} 
                     required 
+                    className="w-full"
                   />
                 </div>
               </CardContent>
@@ -117,6 +119,7 @@ const Auth = () => {
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)} 
                     required 
+                    className="w-full"
                   />
                 </div>
                 <div className="space-y-2">
@@ -127,6 +130,7 @@ const Auth = () => {
                     value={password} 
                     onChange={(e) => setPassword(e.target.value)} 
                     required 
+                    className="w-full"
                   />
                 </div>
               </CardContent>
