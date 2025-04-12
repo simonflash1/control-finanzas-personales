@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { Database } from "@/integrations/supabase/types";
@@ -37,10 +38,15 @@ interface FinanceContextType {
   totalExpenses: number;
   totalIncome: number;
   addExpense: (expense: Omit<Expense, 'id'>) => void;
+  editExpense: (id: string, updatedExpense: Omit<Expense, 'id'>) => void;
+  deleteExpense: (id: string) => void;
+  updateCategory: (oldCategory: CategoryType, newCategory: string) => void;
+  deleteCategory: (category: CategoryType) => void;
   addIncome: (income: Omit<Income, 'id'>) => void;
   addAccount: (account: Omit<Account, 'id'>) => void;
   updateAccount: (id: string, balance: number) => void;
   getCategoryExpenses: () => Record<CategoryType, number>;
+  getAllCategories: () => CategoryType[];
 }
 
 const FinanceContext = createContext<FinanceContextType | undefined>(undefined);
@@ -82,6 +88,30 @@ export const FinanceProvider = ({ children }: { children: ReactNode }) => {
     setExpenses([...expenses, newExpense]);
   };
 
+  const editExpense = (id: string, updatedExpense: Omit<Expense, 'id'>) => {
+    setExpenses(expenses.map(expense => 
+      expense.id === id ? { ...updatedExpense, id } : expense
+    ));
+  };
+
+  const deleteExpense = (id: string) => {
+    setExpenses(expenses.filter(expense => expense.id !== id));
+  };
+
+  // Update all expenses of a specific category to use a new category name
+  const updateCategory = (oldCategory: CategoryType, newCategory: string) => {
+    // This is just a mock implementation. In a real app with a database,
+    // you would need to update the schema to allow the new category
+    setExpenses(expenses.map(expense => 
+      expense.category === oldCategory ? { ...expense, category: newCategory as CategoryType } : expense
+    ));
+  };
+
+  // Delete all expenses of a specific category
+  const deleteCategory = (category: CategoryType) => {
+    setExpenses(expenses.filter(expense => expense.category !== category));
+  };
+
   const addIncome = (income: Omit<Income, 'id'>) => {
     const newIncome = { ...income, id: crypto.randomUUID() };
     setIncomes([...incomes, newIncome]);
@@ -116,6 +146,12 @@ export const FinanceProvider = ({ children }: { children: ReactNode }) => {
     return categoryTotals;
   };
 
+  // Get a unique list of all categories used in expenses
+  const getAllCategories = (): CategoryType[] => {
+    // In this mock implementation, we'll just return all possible categories
+    return ['food', 'transport', 'home', 'health', 'shopping', 'entertainment', 'other'];
+  };
+
   return (
     <FinanceContext.Provider
       value={{
@@ -126,10 +162,15 @@ export const FinanceProvider = ({ children }: { children: ReactNode }) => {
         totalExpenses,
         totalIncome,
         addExpense,
+        editExpense,
+        deleteExpense,
+        updateCategory,
+        deleteCategory,
         addIncome,
         addAccount,
         updateAccount,
         getCategoryExpenses,
+        getAllCategories,
       }}
     >
       {children}
