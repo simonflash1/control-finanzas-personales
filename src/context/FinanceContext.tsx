@@ -1,7 +1,9 @@
-
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
 
-export type CategoryType = 'food' | 'transport' | 'home' | 'health' | 'shopping' | 'entertainment' | 'other';
+export type CategoryType = Database["public"]["Enums"]["category_type"];
+export type AccountType = Database["public"]["Enums"]["account_type"];
 
 export interface Expense {
   id: string;
@@ -24,7 +26,7 @@ export interface Account {
   name: string;
   balance: number;
   color: string;
-  type: 'bank' | 'cash' | 'credit' | 'savings' | 'other';
+  type: AccountType;
 }
 
 interface FinanceContextType {

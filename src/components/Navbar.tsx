@@ -1,35 +1,34 @@
 
-import { useTheme } from "@/context/ThemeContext";
-import { Button } from "@/components/ui/button";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Moon, Sun, Bell } from "lucide-react";
+import { useAuth } from '@/hooks/useAuth';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const Navbar = () => {
-  const { theme, toggleTheme } = useTheme();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast.success('Signed out successfully');
+    navigate('/auth');
+  };
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-2 bg-background border-b md:px-6">
-      <div className="flex items-center">
-        <SidebarTrigger className="md:hidden mr-2" />
-        <h1 className="text-xl font-semibold tracking-tight">FinanceFlow</h1>
-      </div>
-      
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" aria-label="Notifications">
-          <Bell className="h-5 w-5" />
-        </Button>
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          onClick={toggleTheme} 
-          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-        >
-          {theme === 'dark' ? (
-            <Sun className="h-5 w-5" />
+    <header className="border-b">
+      <div className="flex h-16 items-center px-4 md:px-6">
+        <div className="flex w-full justify-between items-center">
+          <div className="font-semibold text-lg">FinanceFlow</div>
+          {user ? (
+            <Button variant="outline" onClick={handleSignOut}>
+              Sign Out
+            </Button>
           ) : (
-            <Moon className="h-5 w-5" />
+            <Button variant="outline" onClick={() => navigate('/auth')}>
+              Sign In
+            </Button>
           )}
-        </Button>
+        </div>
       </div>
     </header>
   );
