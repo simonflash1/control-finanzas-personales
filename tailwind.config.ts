@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,16 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Category colors
+				category: {
+					food: '#f471b5',
+					transport: '#f59e0b',
+					home: '#3b82f6',
+					health: '#10b981',
+					shopping: '#06b6d4',
+					entertainment: '#8b5cf6',
+					other: '#6b7280',
 				}
 			},
 			borderRadius: {
