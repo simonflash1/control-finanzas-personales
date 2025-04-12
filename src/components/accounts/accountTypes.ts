@@ -1,9 +1,11 @@
 
+import { Database } from "@/integrations/supabase/types";
+
 export interface Account {
   id: string;
   name: string;
   balance: number;
-  type: string;
+  type: AccountType;
   color: string;
   user_id: string;
   created_at: string;
@@ -17,19 +19,20 @@ export const accountTypes = [
   { value: 'other', label: 'Other' }
 ] as const;
 
-export type AccountType = typeof accountTypes[number]['value'];
+// Using the type from Supabase's generated types
+export type AccountType = Database['public']['Enums']['account_type'];
 
 export interface NewAccountData {
   user_id: string;
   name: string;
   balance: number;
-  type: string;
+  type: AccountType;
   color: string;
 }
 
 export interface UpdateAccountData {
   name: string;
   balance: number;
-  type: string;
+  type: AccountType;
   color: string;
 }

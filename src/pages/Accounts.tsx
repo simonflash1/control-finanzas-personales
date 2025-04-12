@@ -51,9 +51,10 @@ const Accounts = () => {
 
   const handleAddAccount = async (accountData: NewAccountData) => {
     try {
+      // Note the change here - now we pass a single object instead of an array
       const { error } = await supabase
         .from('accounts')
-        .insert([accountData]);
+        .insert(accountData);
         
       if (error) throw error;
       

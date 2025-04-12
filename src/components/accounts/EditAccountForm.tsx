@@ -17,7 +17,7 @@ interface EditAccountFormProps {
 const EditAccountForm = ({ account, onClose, onSubmit }: EditAccountFormProps) => {
   const [accountName, setAccountName] = useState(account.name);
   const [accountBalance, setAccountBalance] = useState(account.balance.toString());
-  const [accountType, setAccountType] = useState<AccountType>(account.type as AccountType);
+  const [accountType, setAccountType] = useState<AccountType>(account.type);
   const [accountColor, setAccountColor] = useState(account.color);
 
   const handleColorChange = (color: ColorResult) => {
