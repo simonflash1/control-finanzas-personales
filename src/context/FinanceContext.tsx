@@ -1,12 +1,6 @@
 
-import { FinanceProvider, useFinance, CategoryType, AccountType, Expense, Income, Account } from './finance';
+import { FinanceProvider, useFinance } from './finance';
+import type { CategoryType, AccountType, Expense, Income, Account } from './finance';
 
-export { 
-  FinanceProvider, 
-  useFinance, 
-  CategoryType, 
-  AccountType, 
-  Expense, 
-  Income, 
-  Account 
-};
+export { FinanceProvider, useFinance };
+export type { CategoryType, AccountType, Expense, Income, Account };
