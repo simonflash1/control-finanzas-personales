@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CategoryType } from "@/context/FinanceContext";
 import { CATEGORY_COLORS, CATEGORY_ICONS } from "@/lib/constants";
-import { Pencil, Trash, Check, X } from "lucide-react";
+import { Pencil, Trash, Check, X, AlertCircle } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ManageCategoriesDialogProps {
   open: boolean;
@@ -15,6 +16,7 @@ interface ManageCategoriesDialogProps {
   categories: CategoryType[];
   onUpdateCategory: (oldCategory: CategoryType, newCategory: string) => void;
   onDeleteCategory: (category: CategoryType) => void;
+  getCategoryExpenseCount: (category: CategoryType) => number;
 }
 
 const ManageCategoriesDialog = ({
@@ -22,7 +24,8 @@ const ManageCategoriesDialog = ({
   onOpenChange,
   categories,
   onUpdateCategory,
-  onDeleteCategory
+  onDeleteCategory,
+  getCategoryExpenseCount
 }: ManageCategoriesDialogProps) => {
   const [editingCategory, setEditingCategory] = useState<CategoryType | null>(null);
   const [newCategoryName, setNewCategoryName] = useState("");
@@ -60,6 +63,8 @@ const ManageCategoriesDialog = ({
             {categories.map((category) => {
               const IconComponent = CATEGORY_ICONS[category as CategoryType];
               const isEditing = editingCategory === category;
+              const expenseCount = getCategoryExpenseCount(category);
+              const hasExpenses = expenseCount > 0;
               
               return (
                 <div 
@@ -82,7 +87,14 @@ const ManageCategoriesDialog = ({
                         autoFocus
                       />
                     ) : (
-                      <span className="capitalize">{category}</span>
+                      <div className="flex items-center">
+                        <span className="capitalize">{category}</span>
+                        {hasExpenses && (
+                          <span className="text-xs text-muted-foreground ml-2">
+                            ({expenseCount} expenses)
+                          </span>
+                        )}
+                      </div>
                     )}
                   </div>
                   
@@ -98,16 +110,49 @@ const ManageCategoriesDialog = ({
                       </>
                     ) : (
                       <>
-                        <Button variant="ghost" size="sm" onClick={() => handleEditStart(category)}>
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          onClick={() => onDeleteCategory(category)}
-                        >
-                          <Trash className="h-4 w-4" />
-                        </Button>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  onClick={() => handleEditStart(category)}
+                                  disabled={hasExpenses}
+                                >
+                                  <Pencil className={`h-4 w-4 ${hasExpenses ? 'text-muted-foreground' : ''}`} />
+                                </Button>
+                              </div>
+                            </TooltipTrigger>
+                            {hasExpenses && (
+                              <TooltipContent>
+                                <p>Cannot edit category with existing expenses</p>
+                              </TooltipContent>
+                            )}
+                          </Tooltip>
+                        </TooltipProvider>
+
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  onClick={() => onDeleteCategory(category)}
+                                  disabled={hasExpenses}
+                                >
+                                  <Trash className={`h-4 w-4 ${hasExpenses ? 'text-muted-foreground' : ''}`} />
+                                </Button>
+                              </div>
+                            </TooltipTrigger>
+                            {hasExpenses && (
+                              <TooltipContent>
+                                <p>Cannot delete category with existing expenses</p>
+                              </TooltipContent>
+                            )}
+                          </Tooltip>
+                        </TooltipProvider>
                       </>
                     )}
                   </div>
@@ -117,7 +162,7 @@ const ManageCategoriesDialog = ({
           </div>
           
           <p className="text-sm text-muted-foreground">
-            Note: Editing or deleting a category will affect all expenses with that category.
+            Categories with existing expenses cannot be edited or deleted. You must reassign or delete the expenses first.
           </p>
         </div>
       </DialogContent>

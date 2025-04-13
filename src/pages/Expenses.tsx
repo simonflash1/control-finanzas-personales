@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -39,7 +38,8 @@ const Expenses = () => {
     getCategoryExpenses,
     getAllCategories,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    getCategoryExpenseCount
   } = useFinance();
   
   const [open, setOpen] = useState(false);
@@ -117,20 +117,37 @@ const Expenses = () => {
   };
 
   const handleUpdateCategory = (oldCategory: CategoryType, newCategory: string) => {
-    // In a real implementation, this would need to be more complex, potentially updating the database schema
+    if (getCategoryExpenseCount(oldCategory) > 0) {
+      toast({
+        title: "Error",
+        description: "Cannot modify a category with existing expenses",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     updateCategory(oldCategory, newCategory);
     toast({
       title: "Success",
-      description: `Category ${oldCategory} has been updated`,
+      description: `Category ${oldCategory} has been updated to ${newCategory}`,
     });
   };
 
   const handleDeleteCategory = (category: CategoryType) => {
-    if (window.confirm(`Are you sure you want to delete the ${category} category and all related expenses?`)) {
+    if (getCategoryExpenseCount(category) > 0) {
+      toast({
+        title: "Error",
+        description: "Cannot delete a category with existing expenses",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (window.confirm(`Are you sure you want to delete the ${category} category?`)) {
       deleteCategory(category);
       toast({
         title: "Success",
-        description: `Category ${category} and all related expenses have been deleted`,
+        description: `Category ${category} has been deleted`,
       });
     }
   };
@@ -143,12 +160,10 @@ const Expenses = () => {
     }))
     .sort((a, b) => a.category.localeCompare(b.category));
 
-  // Find the current expense being edited
   const expenseBeingEdited = editingExpense 
     ? expenses.find(e => e.id === editingExpense) 
     : null;
 
-  // Get all categories
   const allCategories = getAllCategories();
 
   return (
@@ -343,7 +358,6 @@ const Expenses = () => {
         </TabsContent>
       </Tabs>
 
-      {/* Edit Expense Modal */}
       {editingExpense && expenseBeingEdited && (
         <EditExpenseForm
           expense={expenseBeingEdited}
@@ -352,13 +366,13 @@ const Expenses = () => {
         />
       )}
 
-      {/* Manage Categories Dialog */}
       <ManageCategoriesDialog
         open={manageCategoriesOpen}
         onOpenChange={setManageCategoriesOpen}
         categories={allCategories}
         onUpdateCategory={handleUpdateCategory}
         onDeleteCategory={handleDeleteCategory}
+        getCategoryExpenseCount={getCategoryExpenseCount}
       />
     </div>
   );

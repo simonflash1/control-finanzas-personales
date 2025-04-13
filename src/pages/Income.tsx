@@ -15,12 +15,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFinance } from "@/context/FinanceContext";
 import { format } from "date-fns";
-import { Plus, DollarSign } from "lucide-react";
+import { Plus, DollarSign, Pencil, Trash } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import EditIncomeForm from "@/components/income/EditIncomeForm";
 
 const Income = () => {
   const { toast } = useToast();
-  const { incomes, addIncome, totalIncome } = useFinance();
+  const { incomes, addIncome, editIncome, deleteIncome, totalIncome } = useFinance();
   const [open, setOpen] = useState(false);
   const [newIncome, setNewIncome] = useState({
     amount: "",
@@ -28,6 +29,7 @@ const Income = () => {
     date: new Date().toISOString().slice(0, 10),
     description: "",
   });
+  const [editingIncomeId, setEditingIncomeId] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +63,39 @@ const Income = () => {
       description: "Income added successfully",
     });
   };
+
+  const handleEdit = (id: string) => {
+    setEditingIncomeId(id);
+  };
+
+  const handleEditSubmit = (id: string, updatedIncome: {
+    amount: number;
+    source: string;
+    date: string;
+    description: string;
+  }) => {
+    editIncome(id, updatedIncome);
+    setEditingIncomeId(null);
+    toast({
+      title: "Success",
+      description: "Income updated successfully",
+    });
+  };
+
+  const handleDelete = (id: string) => {
+    if (window.confirm("Are you sure you want to delete this income entry?")) {
+      deleteIncome(id);
+      toast({
+        title: "Success",
+        description: "Income deleted successfully",
+      });
+    }
+  };
+
+  // Find the current income being edited
+  const incomeBeingEdited = editingIncomeId 
+    ? incomes.find(inc => inc.id === editingIncomeId) 
+    : null;
 
   return (
     <div className="space-y-6">
@@ -180,7 +215,15 @@ const Income = () => {
                         </p>
                       </div>
                     </div>
-                    <span className="font-medium text-green-600">+${income.amount.toFixed(2)}</span>
+                    <div className="flex items-center space-x-2">
+                      <span className="font-medium text-green-600 mr-4">+${income.amount.toFixed(2)}</span>
+                      <Button variant="ghost" size="sm" onClick={() => handleEdit(income.id)}>
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => handleDelete(income.id)}>
+                        <Trash className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 ))
             ) : (
@@ -191,6 +234,15 @@ const Income = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Edit Income Modal */}
+      {editingIncomeId && incomeBeingEdited && (
+        <EditIncomeForm
+          income={incomeBeingEdited}
+          onClose={() => setEditingIncomeId(null)}
+          onSubmit={handleEditSubmit}
+        />
+      )}
     </div>
   );
 };

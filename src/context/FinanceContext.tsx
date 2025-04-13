@@ -43,9 +43,12 @@ interface FinanceContextType {
   updateCategory: (oldCategory: CategoryType, newCategory: string) => void;
   deleteCategory: (category: CategoryType) => void;
   addIncome: (income: Omit<Income, 'id'>) => void;
+  editIncome: (id: string, updatedIncome: Omit<Income, 'id'>) => void;
+  deleteIncome: (id: string) => void;
   addAccount: (account: Omit<Account, 'id'>) => void;
   updateAccount: (id: string, balance: number) => void;
   getCategoryExpenses: () => Record<CategoryType, number>;
+  getCategoryExpenseCount: (category: CategoryType) => number;
   getAllCategories: () => CategoryType[];
 }
 
@@ -117,6 +120,16 @@ export const FinanceProvider = ({ children }: { children: ReactNode }) => {
     setIncomes([...incomes, newIncome]);
   };
 
+  const editIncome = (id: string, updatedIncome: Omit<Income, 'id'>) => {
+    setIncomes(incomes.map(income => 
+      income.id === id ? { ...updatedIncome, id } : income
+    ));
+  };
+
+  const deleteIncome = (id: string) => {
+    setIncomes(incomes.filter(income => income.id !== id));
+  };
+
   const addAccount = (account: Omit<Account, 'id'>) => {
     const newAccount = { ...account, id: crypto.randomUUID() };
     setAccounts([...accounts, newAccount]);
@@ -146,6 +159,11 @@ export const FinanceProvider = ({ children }: { children: ReactNode }) => {
     return categoryTotals;
   };
 
+  // Get the count of expenses for a specific category
+  const getCategoryExpenseCount = (category: CategoryType): number => {
+    return expenses.filter(expense => expense.category === category).length;
+  };
+
   // Get a unique list of all categories used in expenses
   const getAllCategories = (): CategoryType[] => {
     // In this mock implementation, we'll just return all possible categories
@@ -167,9 +185,12 @@ export const FinanceProvider = ({ children }: { children: ReactNode }) => {
         updateCategory,
         deleteCategory,
         addIncome,
+        editIncome,
+        deleteIncome,
         addAccount,
         updateAccount,
         getCategoryExpenses,
+        getCategoryExpenseCount,
         getAllCategories,
       }}
     >
