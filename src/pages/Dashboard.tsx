@@ -1,6 +1,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BalanceCard from "@/components/BalanceCard";
+import MonthlyBalanceCard from "@/components/MonthlyBalanceCard";
 import ExpensePieChart from "@/components/ExpensePieChart";
 import AccountsList from "@/components/AccountsList";
 import CategoryList from "@/components/CategoryList";
@@ -20,6 +21,7 @@ const Dashboard = () => {
         <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <BalanceCard />
+            <MonthlyBalanceCard />
           </div>
           
           <div className="grid gap-4 md:grid-cols-2">
