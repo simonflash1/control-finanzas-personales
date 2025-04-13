@@ -20,19 +20,46 @@ const AddAccountForm = ({ onClose, onSubmit, userId }: AddAccountFormProps) => {
   const [accountType, setAccountType] = useState<AccountType>('bank');
   const [accountColor, setAccountColor] = useState('#3b82f6');
 
+  const [errors, setErrors] = useState<{ name?: string; balance?: string }>({});
+
   const handleColorChange = (color: ColorResult) => {
     setAccountColor(color.hex);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({
-      user_id: userId,
-      name: accountName,
-      balance: parseFloat(accountBalance),
-      type: accountType,
-      color: accountColor
-    });
+
+    const newErrors: typeof errors = {};
+
+    if (!accountName.trim()) {
+      newErrors.name = "El nombre de la cuenta es obligatorio.";
+    } else if (accountName.length < 3) {
+      newErrors.name = "El nombre debe tener al menos 3 caracteres.";
+    }
+
+    const balanceNumber = parseFloat(accountBalance);
+    if (isNaN(balanceNumber)) {
+      newErrors.balance = "El saldo debe ser un número.";
+    } else if (balanceNumber < 0) {
+      newErrors.balance = "El saldo no puede ser negativo.";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      onSubmit({
+        user_id: userId,
+        name: accountName.trim(),
+        balance: balanceNumber,
+        type: accountType,
+        color: accountColor,
+      });
+
+      // Limpiar formulario si querés
+      setAccountName('');
+      setAccountBalance('');
+      setErrors({});
+    }
   };
 
   return (
@@ -51,8 +78,8 @@ const AddAccountForm = ({ onClose, onSubmit, userId }: AddAccountFormProps) => {
                 id="accountName"
                 value={accountName}
                 onChange={(e) => setAccountName(e.target.value)}
-                required
               />
+              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
             </div>
             <div>
               <Label htmlFor="accountBalance">Initial Balance</Label>
@@ -61,8 +88,8 @@ const AddAccountForm = ({ onClose, onSubmit, userId }: AddAccountFormProps) => {
                 id="accountBalance"
                 value={accountBalance}
                 onChange={(e) => setAccountBalance(e.target.value)}
-                required
               />
+              {errors.balance && <p className="text-red-500 text-sm mt-1">{errors.balance}</p>}
             </div>
             <div>
               <Label htmlFor="accountType">Account Type</Label>

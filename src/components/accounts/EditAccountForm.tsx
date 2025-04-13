@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,18 +19,43 @@ const EditAccountForm = ({ account, onClose, onSubmit }: EditAccountFormProps) =
   const [accountType, setAccountType] = useState<AccountType>(account.type);
   const [accountColor, setAccountColor] = useState(account.color);
 
+  const [errors, setErrors] = useState<{ name?: string; balance?: string }>({});
+
   const handleColorChange = (color: ColorResult) => {
     setAccountColor(color.hex);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(account.id, {
-      name: accountName,
-      balance: parseFloat(accountBalance),
-      type: accountType,
-      color: accountColor
-    });
+
+    const newErrors: typeof errors = {};
+
+    if (!accountName.trim()) {
+      newErrors.name = "El nombre de la cuenta es obligatorio.";
+    } else if (accountName.trim().length < 3) {
+      newErrors.name = "El nombre debe tener al menos 3 caracteres.";
+    }
+
+    const balanceNumber = parseFloat(accountBalance);
+    if (isNaN(balanceNumber)) {
+      newErrors.balance = "El saldo debe ser un número.";
+    } else if (balanceNumber < 0) {
+      newErrors.balance = "El saldo no puede ser negativo.";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      onSubmit(account.id, {
+        name: accountName.trim(),
+        balance: balanceNumber,
+        type: accountType,
+        color: accountColor,
+      });
+
+      // opcional: cerrar modal o resetear errores
+      setErrors({});
+    }
   };
 
   return (
@@ -50,8 +74,8 @@ const EditAccountForm = ({ account, onClose, onSubmit }: EditAccountFormProps) =
                 id="editedAccountName"
                 value={accountName}
                 onChange={(e) => setAccountName(e.target.value)}
-                required
               />
+              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
             </div>
             <div>
               <Label htmlFor="editedAccountBalance">Balance</Label>
@@ -60,8 +84,8 @@ const EditAccountForm = ({ account, onClose, onSubmit }: EditAccountFormProps) =
                 id="editedAccountBalance"
                 value={accountBalance}
                 onChange={(e) => setAccountBalance(e.target.value)}
-                required
               />
+              {errors.balance && <p className="text-red-500 text-sm mt-1">{errors.balance}</p>}
             </div>
             <div>
               <Label htmlFor="editedAccountType">Account Type</Label>
@@ -94,3 +118,4 @@ const EditAccountForm = ({ account, onClose, onSubmit }: EditAccountFormProps) =
 };
 
 export default EditAccountForm;
+
