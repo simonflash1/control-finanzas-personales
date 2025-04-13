@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
 
 interface EditIncomeFormProps {
   income: {
@@ -23,19 +24,38 @@ interface EditIncomeFormProps {
 }
 
 const EditIncomeForm = ({ income, onClose, onSubmit }: EditIncomeFormProps) => {
+  const { toast } = useToast();
   const [amount, setAmount] = useState(income.amount.toString());
   const [source, setSource] = useState(income.source);
   const [date, setDate] = useState(income.date.slice(0, 10)); // Format date to YYYY-MM-DD
   const [description, setDescription] = useState(income.description);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(income.id, {
-      amount: parseFloat(amount),
-      source,
-      date,
-      description,
-    });
+    setIsSubmitting(true);
+    
+    try {
+      await onSubmit(income.id, {
+        amount: parseFloat(amount),
+        source,
+        date,
+        description,
+      });
+      toast({
+        title: "Success",
+        description: "Income updated successfully",
+      });
+    } catch (error) {
+      console.error("Error updating income:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update income. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -90,10 +110,12 @@ const EditIncomeForm = ({ income, onClose, onSubmit }: EditIncomeFormProps) => {
               />
             </div>
             <div className="flex justify-end gap-2">
-              <Button type="button" variant="secondary" onClick={onClose}>
+              <Button type="button" variant="secondary" onClick={onClose} disabled={isSubmitting}>
                 Cancel
               </Button>
-              <Button type="submit">Update Income</Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Updating..." : "Update Income"}
+              </Button>
             </div>
           </form>
         </CardContent>
