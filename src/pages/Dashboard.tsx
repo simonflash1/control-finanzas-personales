@@ -1,11 +1,10 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import BalanceCard from "@/components/BalanceCard";
 import MonthlyBalanceCard from "@/components/MonthlyBalanceCard";
 import ExpensePieChart from "@/components/ExpensePieChart";
 import AccountsList from "@/components/AccountsList";
 import CategoryList from "@/components/CategoryList";
 import RecentTransactions from "@/components/RecentTransactions";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Dashboard = () => {
   return (
@@ -19,9 +18,9 @@ const Dashboard = () => {
         </TabsList>
         
         <TabsContent value="overview" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <BalanceCard />
-            <MonthlyBalanceCard />
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <MonthlyBalanceCard className="lg:col-span-2" />
+            <AccountsList />
           </div>
           
           <div className="grid gap-4 md:grid-cols-2">
@@ -29,9 +28,8 @@ const Dashboard = () => {
             <CategoryList />
           </div>
           
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4">
             <RecentTransactions />
-            <AccountsList />
           </div>
         </TabsContent>
         
@@ -86,7 +84,5 @@ const Dashboard = () => {
     </div>
   );
 };
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default Dashboard;

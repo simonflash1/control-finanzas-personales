@@ -4,7 +4,11 @@ import { useFinance } from "@/context/FinanceContext";
 import { startOfMonth, endOfMonth, format } from "date-fns";
 import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
 
-const MonthlyBalanceCard = () => {
+interface MonthlyBalanceCardProps {
+  className?: string;
+}
+
+const MonthlyBalanceCard = ({ className }: MonthlyBalanceCardProps) => {
   const { expenses, incomes } = useFinance();
   
   // Get current month date range
@@ -31,7 +35,7 @@ const MonthlyBalanceCard = () => {
   const monthLabel = format(new Date(), 'MMMM yyyy');
   
   return (
-    <Card className="w-full h-full">
+    <Card className={`w-full h-full ${className || ''}`}>
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium">Monthly Balance ({monthLabel})</CardTitle>
       </CardHeader>
