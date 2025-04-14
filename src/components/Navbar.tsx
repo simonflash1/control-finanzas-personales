@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { Menu } from 'lucide-react';
 import { useSidebar } from '@/components/ui/sidebar';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { ThemeToggle } from './ThemeToggle';
 
 const Navbar = () => {
   const { user, signOut } = useAuth();
@@ -30,15 +31,18 @@ const Navbar = () => {
             </Button>
           )}
           <div className="font-semibold text-lg md:text-xl">FinanceFlow</div>
-          {user ? (
-            <Button variant="outline" onClick={handleSignOut} size={isMobile ? "sm" : "default"}>
-              Sign Out
-            </Button>
-          ) : (
-            <Button variant="outline" onClick={() => navigate('/auth')} size={isMobile ? "sm" : "default"}>
-              Sign In
-            </Button>
-          )}
+          <div className="flex items-center space-x-4">
+            <ThemeToggle />
+            {user ? (
+              <Button variant="outline" onClick={handleSignOut} size={isMobile ? "sm" : "default"}>
+                Sign Out
+              </Button>
+            ) : (
+              <Button variant="outline" onClick={() => navigate('/auth')} size={isMobile ? "sm" : "default"}>
+                Sign In
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </header>
