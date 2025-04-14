@@ -1,4 +1,3 @@
-
 import { useFinance } from "@/context/FinanceContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { format, parseISO, differenceInDays, isBefore } from "date-fns";
@@ -105,4 +104,3 @@ const DebtSummary = ({ className }: DebtSummaryProps) => {
 };
 
 export default DebtSummary;
-
