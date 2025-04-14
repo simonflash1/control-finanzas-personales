@@ -1,10 +1,11 @@
+
 import { useFinance } from "@/context/FinanceContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PiHash } from "react-icons/pi";
+import { Hash } from "lucide-react";  // Replace PiHash with Lucide Hash icon
 import { cn } from "@/lib/utils";
 
 interface CategoryListProps {
-  className?: string;
+  className?: string;  // Add optional className prop
 }
 
 const CategoryList = ({ className }: CategoryListProps) => {
@@ -30,7 +31,7 @@ const CategoryList = ({ className }: CategoryListProps) => {
           {categories.map((category) => (
             <div key={category} className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <PiHash className="h-4 w-4 text-gray-500" />
+                <Hash className="h-4 w-4 text-gray-500" />
                 <span>{category}</span>
               </div>
               <span>{formatCurrency(categoryExpenses[category] || 0)}</span>
@@ -43,3 +44,4 @@ const CategoryList = ({ className }: CategoryListProps) => {
 };
 
 export default CategoryList;
+

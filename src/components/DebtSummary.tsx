@@ -6,7 +6,7 @@ import { BanknoteIcon, CreditCard, CalendarCheck, AlertCircle } from "lucide-rea
 import { cn } from "@/lib/utils";
 
 interface DebtSummaryProps {
-  className?: string;
+  className?: string;  // Add optional className prop
 }
 
 const DebtSummary = ({ className }: DebtSummaryProps) => {
@@ -105,3 +105,4 @@ const DebtSummary = ({ className }: DebtSummaryProps) => {
 };
 
 export default DebtSummary;
+
