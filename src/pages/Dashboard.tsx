@@ -27,7 +27,7 @@ const Dashboard = () => {
           
           <div className="grid gap-4 md:grid-cols-2">
             <ExpensePieChart />
-            <DebtSummary />
+            <DebtSummary className="md:col-span-1" />
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
@@ -89,3 +89,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
