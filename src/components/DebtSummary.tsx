@@ -5,7 +5,11 @@ import { format, parseISO, differenceInDays, isBefore } from "date-fns";
 import { BanknoteIcon, CreditCard, CalendarCheck, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const DebtSummary = ({ className }: { className?: string }) => {
+interface DebtSummaryProps {
+  className?: string;
+}
+
+const DebtSummary = ({ className }: DebtSummaryProps) => {
   const { debts } = useFinance();
   
   const formatCurrency = (amount: number) => {

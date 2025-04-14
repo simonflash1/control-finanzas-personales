@@ -1,6 +1,7 @@
 
 import { useState } from "react";
-import { useFinance, DebtType } from "@/context/FinanceContext";
+import { useFinance } from "@/context/FinanceContext";
+import { DebtType } from "@/context/finance/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
