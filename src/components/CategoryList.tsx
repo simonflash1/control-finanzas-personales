@@ -1,11 +1,11 @@
 
 import { useFinance } from "@/context/FinanceContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Hash } from "lucide-react";  // Replace PiHash with Lucide Hash icon
+import { CATEGORY_ICONS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 interface CategoryListProps {
-  className?: string;  // Add optional className prop
+  className?: string;
 }
 
 const CategoryList = ({ className }: CategoryListProps) => {
@@ -28,15 +28,18 @@ const CategoryList = ({ className }: CategoryListProps) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {categories.map((category) => (
-            <div key={category} className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Hash className="h-4 w-4 text-gray-500" />
-                <span>{category}</span>
+          {categories.map((category) => {
+            const IconComponent = CATEGORY_ICONS[category];
+            return (
+              <div key={category} className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <IconComponent className="h-4 w-4 text-gray-500" />
+                  <span>{category}</span>
+                </div>
+                <span>{formatCurrency(categoryExpenses[category] || 0)}</span>
               </div>
-              <span>{formatCurrency(categoryExpenses[category] || 0)}</span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </CardContent>
     </Card>
@@ -44,4 +47,3 @@ const CategoryList = ({ className }: CategoryListProps) => {
 };
 
 export default CategoryList;
-
