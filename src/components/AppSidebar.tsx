@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarFooter,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import {
   Home,
@@ -27,6 +28,14 @@ const AppSidebar = () => {
   const { theme } = useTheme();
   const { signOut } = useAuth();
   const isMobile = useIsMobile();
+  const { setOpenMobile } = useSidebar();
+  
+  // Function to close the mobile sidebar
+  const handleMenuItemClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
   
   const menuItems = [
     { to: "/", icon: Home, label: "Dashboard" },
@@ -58,6 +67,7 @@ const AppSidebar = () => {
                   className={({ isActive }) => 
                     isActive ? "text-primary flex items-center gap-3 w-full" : "flex items-center gap-3 w-full"
                   }
+                  onClick={handleMenuItemClick}
                 >
                   <item.icon className="h-5 w-5" />
                   <span>{item.label}</span>
@@ -70,7 +80,12 @@ const AppSidebar = () => {
       <SidebarFooter>
         <div className="px-4 py-3">
           <button 
-            onClick={signOut}
+            onClick={() => {
+              signOut();
+              if (isMobile) {
+                setOpenMobile(false);
+              }
+            }}
             className="flex items-center gap-3 w-full text-red-500 hover:text-red-600 transition-colors"
           >
             <LogOut className="h-5 w-5" />
