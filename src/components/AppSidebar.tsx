@@ -20,6 +20,7 @@ import {
   BarChart3,
   Settings,
   LogOut,
+  BanknoteIcon,
 } from "lucide-react";
 
 const AppSidebar = () => {
@@ -32,6 +33,7 @@ const AppSidebar = () => {
     { to: "/expenses", icon: CreditCard, label: "Expenses" },
     { to: "/income", icon: DollarSign, label: "Income" },
     { to: "/accounts", icon: Wallet, label: "Accounts" },
+    { to: "/debts", icon: BanknoteIcon, label: "Debts" },
     { to: "/statistics", icon: BarChart3, label: "Statistics" },
     { to: "/settings", icon: Settings, label: "Settings" },
   ];

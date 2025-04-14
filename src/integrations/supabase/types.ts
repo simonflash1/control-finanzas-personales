@@ -42,6 +42,51 @@ export type Database = {
         }
         Relationships: []
       }
+      debts: {
+        Row: {
+          amount: number
+          closing_date: string | null
+          created_at: string
+          description: string | null
+          due_date: string
+          id: string
+          interest_rate: number | null
+          name: string
+          remaining_amount: number
+          type: Database["public"]["Enums"]["debt_type"]
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          closing_date?: string | null
+          created_at?: string
+          description?: string | null
+          due_date: string
+          id?: string
+          interest_rate?: number | null
+          name: string
+          remaining_amount: number
+          type: Database["public"]["Enums"]["debt_type"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          closing_date?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string
+          id?: string
+          interest_rate?: number | null
+          name?: string
+          remaining_amount?: number
+          type?: Database["public"]["Enums"]["debt_type"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       expenses: {
         Row: {
           amount: number
@@ -152,6 +197,7 @@ export type Database = {
         | "shopping"
         | "entertainment"
         | "other"
+      debt_type: "loan" | "credit_card"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -277,6 +323,7 @@ export const Constants = {
         "entertainment",
         "other",
       ],
+      debt_type: ["loan", "credit_card"],
     },
   },
 } as const

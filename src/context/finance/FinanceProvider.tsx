@@ -6,17 +6,19 @@ import { useExpenseOperations } from './expenseOperations';
 import { useIncomeOperations } from './incomeOperations';
 import { useAccountOperations } from './accountOperations';
 import { useCategoryOperations } from './categoryOperations';
+import { useDebtOperations } from './debtOperations';
 import { useDataFetcher } from './dataFetcher';
-import { Expense, Income, Account, CategoryType } from './types';
+import { Expense, Income, Account, Debt, CategoryType } from './types';
 
 export const FinanceProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [incomes, setIncomes] = useState<Income[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const [debts, setDebts] = useState<Debt[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const { fetchData } = useDataFetcher(user, setExpenses, setIncomes, setAccounts, setLoading);
+  const { fetchData } = useDataFetcher(user, setExpenses, setIncomes, setAccounts, setDebts, setLoading);
   
   const { 
     addExpense, 
@@ -43,6 +45,12 @@ export const FinanceProvider = ({ children }: { children: ReactNode }) => {
     deleteCategory 
   } = useCategoryOperations(user, expenses, setExpenses);
 
+  const {
+    addDebt,
+    updateDebt,
+    deleteDebt
+  } = useDebtOperations(user, debts, setDebts);
+
   // Calculate totals
   const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
   const totalIncome = incomes.reduce((sum, income) => sum + income.amount, 0);
@@ -64,6 +72,7 @@ export const FinanceProvider = ({ children }: { children: ReactNode }) => {
         expenses,
         incomes,
         accounts,
+        debts,
         totalBalance,
         totalExpenses,
         totalIncome,
@@ -78,6 +87,9 @@ export const FinanceProvider = ({ children }: { children: ReactNode }) => {
         deleteIncome,
         addAccount,
         updateAccount,
+        addDebt,
+        updateDebt,
+        deleteDebt,
         getCategoryExpenses,
         getCategoryExpenseCount,
         getAllCategories,

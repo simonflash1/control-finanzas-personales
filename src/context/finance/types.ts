@@ -3,6 +3,7 @@ import { Database } from "@/integrations/supabase/types";
 
 export type CategoryType = Database["public"]["Enums"]["category_type"];
 export type AccountType = Database["public"]["Enums"]["account_type"];
+export type DebtType = Database["public"]["Enums"]["debt_type"];
 
 export interface Expense {
   id: string;
@@ -28,10 +29,23 @@ export interface Account {
   type: AccountType;
 }
 
+export interface Debt {
+  id: string;
+  name: string;
+  amount: number;
+  remaining_amount: number;
+  type: DebtType;
+  interest_rate?: number;
+  closing_date?: string;
+  due_date: string;
+  description?: string;
+}
+
 export interface FinanceContextType {
   expenses: Expense[];
   incomes: Income[];
   accounts: Account[];
+  debts: Debt[];
   totalBalance: number;
   totalExpenses: number;
   totalIncome: number;
@@ -46,6 +60,9 @@ export interface FinanceContextType {
   deleteIncome: (id: string) => Promise<void>;
   addAccount: (account: Omit<Account, 'id'>) => Promise<void>;
   updateAccount: (id: string, balance: number) => Promise<void>;
+  addDebt: (debt: Omit<Debt, 'id'>) => Promise<void>;
+  updateDebt: (id: string, updatedDebt: Partial<Debt>) => Promise<void>;
+  deleteDebt: (id: string) => Promise<void>;
   getCategoryExpenses: () => Record<CategoryType, number>;
   getCategoryExpenseCount: (category: CategoryType) => number;
   getAllCategories: () => CategoryType[];

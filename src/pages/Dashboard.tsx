@@ -1,8 +1,10 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MonthlyBalanceCard from "@/components/MonthlyBalanceCard";
 import ExpensePieChart from "@/components/ExpensePieChart";
 import AccountsList from "@/components/AccountsList";
 import CategoryList from "@/components/CategoryList";
+import DebtSummary from "@/components/DebtSummary";
 import RecentTransactions from "@/components/RecentTransactions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -25,11 +27,12 @@ const Dashboard = () => {
           
           <div className="grid gap-4 md:grid-cols-2">
             <ExpensePieChart />
-            <CategoryList />
+            <DebtSummary />
           </div>
-          
-          <div className="grid gap-4">
-            <RecentTransactions />
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <CategoryList className="md:col-span-1" />
+            <RecentTransactions className="md:col-span-1" />
           </div>
         </TabsContent>
         

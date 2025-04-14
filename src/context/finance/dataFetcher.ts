@@ -1,13 +1,14 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
-import { Expense, Income, Account } from './types';
+import { Expense, Income, Account, Debt } from './types';
 
 export const useDataFetcher = (
   user: any | null,
   setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>,
   setIncomes: React.Dispatch<React.SetStateAction<Income[]>>,
   setAccounts: React.Dispatch<React.SetStateAction<Account[]>>,
+  setDebts: React.Dispatch<React.SetStateAction<Debt[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const { toast } = useToast();
@@ -18,6 +19,7 @@ export const useDataFetcher = (
       setExpenses([]);
       setIncomes([]);
       setAccounts([]);
+      setDebts([]);
       setLoading(false);
       return;
     }
@@ -53,9 +55,20 @@ export const useDataFetcher = (
         throw accountsError;
       }
 
+      // Fetch debts
+      const { data: debtsData, error: debtsError } = await supabase
+        .from('debts')
+        .select('*')
+        .order('due_date', { ascending: true });
+
+      if (debtsError) {
+        throw debtsError;
+      }
+
       setExpenses(expensesData || []);
       setIncomes(incomesData || []);
       setAccounts(accountsData || []);
+      setDebts(debtsData || []);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast({
