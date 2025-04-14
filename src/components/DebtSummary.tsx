@@ -7,7 +7,7 @@ import { DebtItem } from "./debt/DebtItem";
 import { EmptyDebtList } from "./debt/EmptyDebtList";
 import { sortDebtsByUrgency } from "./debt/DebtUtils";
 
-interface DebtSummaryProps {
+export interface DebtSummaryProps {
   className?: string;
 }
 
