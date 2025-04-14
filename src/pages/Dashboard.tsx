@@ -1,4 +1,3 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MonthlyBalanceCard from "@/components/MonthlyBalanceCard";
 import ExpensePieChart from "@/components/ExpensePieChart";
@@ -89,4 +88,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
