@@ -32,6 +32,19 @@ export const translations = {
     "dashboard.recent": "Recent Transactions",
     "dashboard.balance": "Current Balance",
     "dashboard.monthly": "Monthly Balance",
+    "dashboard.overview": "Overview",
+    "dashboard.analytics": "Analytics",
+    "dashboard.monthlySpendingTrend": "Monthly Spending Trend",
+    "dashboard.savingsRate": "Savings Rate",
+    "dashboard.budgetStatus": "Budget Status",
+    "dashboard.spendingCategories": "Spending Categories",
+    "dashboard.monthlyIncome": "Monthly Income",
+    "dashboard.monthlyExpenses": "Monthly Expenses",
+    
+    // Monthly Balance Alerts
+    "alerts.overspending": "Warning: You're spending more than your income this month. Consider reducing expenses or increasing income.",
+    "alerts.lowSavings": "Notice: Your savings this month are less than 10% of your income.",
+    "alerts.goodSavings": "Great job! You're saving more than 20% of your income this month.",
     
     // Settings
     "settings.title": "Settings",
@@ -74,6 +87,19 @@ export const translations = {
     "dashboard.recent": "Transacciones recientes",
     "dashboard.balance": "Balance actual",
     "dashboard.monthly": "Balance mensual",
+    "dashboard.overview": "Resumen",
+    "dashboard.analytics": "Análisis",
+    "dashboard.monthlySpendingTrend": "Tendencia de gastos mensuales",
+    "dashboard.savingsRate": "Tasa de ahorro",
+    "dashboard.budgetStatus": "Estado del presupuesto",
+    "dashboard.spendingCategories": "Categorías de gastos",
+    "dashboard.monthlyIncome": "Ingresos mensuales",
+    "dashboard.monthlyExpenses": "Gastos mensuales",
+    
+    // Monthly Balance Alerts
+    "alerts.overspending": "Advertencia: Estás gastando más que tus ingresos este mes. Considera reducir gastos o aumentar ingresos.",
+    "alerts.lowSavings": "Aviso: Tus ahorros este mes son menos del 10% de tus ingresos.",
+    "alerts.goodSavings": "¡Buen trabajo! Estás ahorrando más del 20% de tus ingresos este mes.",
     
     // Settings
     "settings.title": "Configuración",

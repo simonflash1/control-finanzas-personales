@@ -1,4 +1,6 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useLanguage } from "@/context/LanguageContext";
 import MonthlyBalanceCard from "@/components/MonthlyBalanceCard";
 import ExpensePieChart from "@/components/ExpensePieChart";
 import AccountsList from "@/components/AccountsList";
@@ -8,14 +10,16 @@ import RecentTransactions from "@/components/RecentTransactions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Dashboard = () => {
+  const { t } = useLanguage();
+  
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{t("dashboard.title")}</h1>
       
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="overview">{t("dashboard.overview")}</TabsTrigger>
+          <TabsTrigger value="analytics">{t("dashboard.analytics")}</TabsTrigger>
         </TabsList>
         
         <TabsContent value="overview" className="space-y-4">
@@ -26,12 +30,12 @@ const Dashboard = () => {
           
           <div className="grid gap-4 md:grid-cols-2">
             <ExpensePieChart />
-            <DebtSummary className="md:col-span-1" />
+            <DebtSummary />
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-            <CategoryList className="md:col-span-1" />
-            <RecentTransactions className="md:col-span-1" />
+            <CategoryList />
+            <RecentTransactions />
           </div>
         </TabsContent>
         
@@ -39,44 +43,44 @@ const Dashboard = () => {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Card className="col-span-full">
               <CardHeader>
-                <CardTitle>Monthly Spending Trend</CardTitle>
+                <CardTitle>{t("dashboard.monthlySpendingTrend")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-[300px] flex items-center justify-center text-muted-foreground">
-                  Spending trend chart will appear here
+                  {t("dashboard.monthlySpendingTrend")}
                 </div>
               </CardContent>
             </Card>
             
             <Card>
               <CardHeader>
-                <CardTitle>Savings Rate</CardTitle>
+                <CardTitle>{t("dashboard.savingsRate")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-[200px] flex items-center justify-center text-muted-foreground">
-                  Savings rate chart will appear here
+                  {t("dashboard.savingsRate")}
                 </div>
               </CardContent>
             </Card>
             
             <Card>
               <CardHeader>
-                <CardTitle>Budget Status</CardTitle>
+                <CardTitle>{t("dashboard.budgetStatus")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-[200px] flex items-center justify-center text-muted-foreground">
-                  Budget status chart will appear here
+                  {t("dashboard.budgetStatus")}
                 </div>
               </CardContent>
             </Card>
             
             <Card>
               <CardHeader>
-                <CardTitle>Spending Categories</CardTitle>
+                <CardTitle>{t("dashboard.spendingCategories")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-[200px] flex items-center justify-center text-muted-foreground">
-                  Category comparison will appear here
+                  {t("dashboard.spendingCategories")}
                 </div>
               </CardContent>
             </Card>
