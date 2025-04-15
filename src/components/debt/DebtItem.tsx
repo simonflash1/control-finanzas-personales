@@ -3,6 +3,7 @@ import { Debt } from "@/context/finance/types";
 import { BanknoteIcon, CreditCard, CalendarCheck } from "lucide-react";
 import { format, parseISO, differenceInDays } from "date-fns";
 import { cn } from "@/lib/utils";
+import { formatCurrency } from "./DebtUtils";
 
 interface DebtItemProps {
   debt: Debt;
@@ -52,12 +53,4 @@ export const DebtItem = ({ debt, today }: DebtItemProps) => {
       </div>
     </div>
   );
-};
-
-// Utility function for formatting currency
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(amount);
 };

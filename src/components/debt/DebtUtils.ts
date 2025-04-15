@@ -3,10 +3,10 @@ import { Debt } from "@/context/finance/types";
 import { parseISO, isBefore } from "date-fns";
 
 // Format currency consistently across debt components
-export const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('en-US', {
+export const formatCurrency = (amount: number, currency: string = 'ARS') => {
+  return new Intl.NumberFormat('es-AR', {
     style: 'currency',
-    currency: 'USD',
+    currency: currency,
   }).format(amount);
 };
 
