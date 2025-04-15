@@ -38,9 +38,10 @@ const MonthlyBalanceCard = ({ className }: MonthlyBalanceCardProps) => {
   const monthLabel = format(new Date(), 'MMMM yyyy');
   
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat(language === 'en' ? 'en-US' : 'es-ES', {
+    // Using USD for both languages for consistency
+    return new Intl.NumberFormat(language === 'en' ? 'en-US' : 'es-AR', {
       style: 'currency',
-      currency: language === 'en' ? 'USD' : 'EUR',
+      currency: 'USD', // Using USD for both languages
     }).format(amount);
   };
   
