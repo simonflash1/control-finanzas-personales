@@ -1,5 +1,6 @@
 
 import { useFinance } from "@/context/FinanceContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CATEGORY_ICONS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -10,6 +11,7 @@ interface CategoryListProps {
 
 const CategoryList = ({ className }: CategoryListProps) => {
   const { getCategoryExpenses, getAllCategories } = useFinance();
+  const { t } = useLanguage();
 
   const categoryExpenses = getCategoryExpenses();
   const categories = getAllCategories();
@@ -24,7 +26,7 @@ const CategoryList = ({ className }: CategoryListProps) => {
   return (
     <Card className={cn("col-span-1", className)}>
       <CardHeader>
-        <CardTitle>Spending by Category</CardTitle>
+        <CardTitle>{t("dashboard.spending")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

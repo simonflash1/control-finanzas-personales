@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useTheme } from "@/context/ThemeContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/hooks/useAuth";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Sidebar,
   SidebarContent,
@@ -29,6 +30,7 @@ const AppSidebar = () => {
   const { signOut } = useAuth();
   const isMobile = useIsMobile();
   const { setOpenMobile } = useSidebar();
+  const { t } = useLanguage();
   
   // Function to close the mobile sidebar
   const handleMenuItemClick = () => {
@@ -38,13 +40,13 @@ const AppSidebar = () => {
   };
   
   const menuItems = [
-    { to: "/", icon: Home, label: "Dashboard" },
-    { to: "/expenses", icon: CreditCard, label: "Expenses" },
-    { to: "/income", icon: DollarSign, label: "Income" },
-    { to: "/accounts", icon: Wallet, label: "Accounts" },
-    { to: "/debts", icon: BanknoteIcon, label: "Debts" },
-    { to: "/statistics", icon: BarChart3, label: "Statistics" },
-    { to: "/settings", icon: Settings, label: "Settings" },
+    { to: "/", icon: Home, label: t("nav.dashboard") },
+    { to: "/expenses", icon: CreditCard, label: t("nav.expenses") },
+    { to: "/income", icon: DollarSign, label: t("nav.income") },
+    { to: "/accounts", icon: Wallet, label: t("nav.accounts") },
+    { to: "/debts", icon: BanknoteIcon, label: t("nav.debts") },
+    { to: "/statistics", icon: BarChart3, label: t("nav.statistics") },
+    { to: "/settings", icon: Settings, label: t("nav.settings") },
   ];
 
   return (
@@ -54,7 +56,7 @@ const AppSidebar = () => {
           <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-secondary flex items-center justify-center">
             <DollarSign className="h-5 w-5 text-white" />
           </div>
-          <span className="font-semibold text-lg">FinanceFlow</span>
+          <span className="font-semibold text-lg">{t("app.name")}</span>
         </div>
       </SidebarHeader>
       <SidebarContent>
@@ -89,7 +91,7 @@ const AppSidebar = () => {
             className="flex items-center gap-3 w-full text-red-500 hover:text-red-600 transition-colors"
           >
             <LogOut className="h-5 w-5" />
-            <span>Logout</span>
+            <span>{t("logout")}</span>
           </button>
         </div>
       </SidebarFooter>

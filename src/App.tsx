@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { FinanceProvider } from "@/context/FinanceContext";
 import { AuthProvider } from "@/hooks/useAuth";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { LanguageProvider } from "@/context/LanguageContext";
 import Layout from "./components/Layout";
 import Auth from "./pages/Auth";
 import RequireAuth from "./components/RequireAuth";
@@ -27,34 +28,36 @@ const App = () => (
     <ThemeProvider>
       <AuthProvider>
         <FinanceProvider>
-          <TooltipProvider>
-            <SidebarProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/auth" element={<Auth />} />
-                  <Route 
-                    path="/" 
-                    element={
-                      <RequireAuth>
-                        <Layout />
-                      </RequireAuth>
-                    }
-                  >
-                    <Route index element={<Dashboard />} />
-                    <Route path="expenses" element={<Expenses />} />
-                    <Route path="income" element={<Income />} />
-                    <Route path="accounts" element={<Accounts />} />
-                    <Route path="debts" element={<Debts />} />
-                    <Route path="statistics" element={<Statistics />} />
-                    <Route path="settings" element={<Settings />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Route>
-                </Routes>
-              </BrowserRouter>
-            </SidebarProvider>
-          </TooltipProvider>
+          <LanguageProvider>
+            <TooltipProvider>
+              <SidebarProvider>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/auth" element={<Auth />} />
+                    <Route 
+                      path="/" 
+                      element={
+                        <RequireAuth>
+                          <Layout />
+                        </RequireAuth>
+                      }
+                    >
+                      <Route index element={<Dashboard />} />
+                      <Route path="expenses" element={<Expenses />} />
+                      <Route path="income" element={<Income />} />
+                      <Route path="accounts" element={<Accounts />} />
+                      <Route path="debts" element={<Debts />} />
+                      <Route path="statistics" element={<Statistics />} />
+                      <Route path="settings" element={<Settings />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Route>
+                  </Routes>
+                </BrowserRouter>
+              </SidebarProvider>
+            </TooltipProvider>
+          </LanguageProvider>
         </FinanceProvider>
       </AuthProvider>
     </ThemeProvider>
