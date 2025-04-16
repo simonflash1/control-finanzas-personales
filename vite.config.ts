@@ -13,6 +13,12 @@ export default defineConfig(({ mode }) => {
     server: {
       host: "::",
       port: 8080,
+      hmr: {
+        // Enable HMR with proper WebSocket configuration
+        overlay: true,
+        clientPort: 8080, // Match the server port
+        timeout: 120000, // Increase timeout to 2 minutes
+      },
     },
     plugins: [
       react(),
