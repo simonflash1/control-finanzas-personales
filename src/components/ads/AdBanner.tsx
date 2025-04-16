@@ -42,7 +42,7 @@ const AdBanner = ({ adSlot, format = 'auto', className = '' }: AdBannerProps) =>
       <ins
         className="adsbygoogle"
         style={{ display: 'block' }}
-        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" // Replace with your actual AdSense publisher ID
+        data-ad-client={import.meta.env.VITE_ADSENSE_PUBLISHER_ID || "ca-pub-XXXXXXXXXXXXXXXX"} // Use env var with fallback
         data-ad-slot={adSlot}
         data-ad-format={format}
         data-full-width-responsive="true"
