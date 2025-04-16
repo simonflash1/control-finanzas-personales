@@ -34,8 +34,8 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      // Replace %VITE_ADSENSE_PUBLISHER_ID% in index.html with actual env variable
-      '%VITE_ADSENSE_PUBLISHER_ID%': JSON.stringify(env.VITE_ADSENSE_PUBLISHER_ID || 'ca-pub-XXXXXXXXXXXXXXXX'),
+      // Handle environment variables properly for build
+      'import.meta.env.VITE_ADSENSE_PUBLISHER_ID': JSON.stringify(env.VITE_ADSENSE_PUBLISHER_ID || 'ca-pub-XXXXXXXXXXXXXXXX'),
       // Define WebSocket token to prevent the reference error
       __WS_TOKEN__: JSON.stringify("development-ws-token"),
     }
