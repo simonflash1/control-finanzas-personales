@@ -13,7 +13,7 @@ const AdBanner = ({ adSlot, format = 'auto', className = '' }: AdBannerProps) =>
   
   useEffect(() => {
     // Only run this in production environment
-    if (process.env.NODE_ENV === 'production' && adContainerRef.current) {
+    if (import.meta.env.PROD && adContainerRef.current) {
       try {
         const adsbygoogle = window.adsbygoogle || [];
         adsbygoogle.push({});
@@ -25,7 +25,7 @@ const AdBanner = ({ adSlot, format = 'auto', className = '' }: AdBannerProps) =>
     }
   }, [adSlot]);
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (import.meta.env.DEV) {
     return (
       <Card className={`flex items-center justify-center bg-muted/20 ${className}`} style={{ minHeight: '90px' }}>
         <div className="text-xs text-muted-foreground p-2 text-center">

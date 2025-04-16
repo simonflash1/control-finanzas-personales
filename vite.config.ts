@@ -18,6 +18,9 @@ export default defineConfig(({ mode }) => {
         overlay: true,
         clientPort: 8080, // Match the server port
         timeout: 120000, // Increase timeout to 2 minutes
+        // Disable WebSocket protocol check that's causing the __WS_TOKEN__ error
+        protocol: 'ws',
+        host: 'localhost',
       },
     },
     plugins: [
@@ -33,6 +36,8 @@ export default defineConfig(({ mode }) => {
     define: {
       // Replace %VITE_ADSENSE_PUBLISHER_ID% in index.html with actual env variable
       '%VITE_ADSENSE_PUBLISHER_ID%': JSON.stringify(env.VITE_ADSENSE_PUBLISHER_ID || 'ca-pub-XXXXXXXXXXXXXXXX'),
+      // Define WebSocket token to prevent the reference error
+      __WS_TOKEN__: JSON.stringify("development-ws-token"),
     }
   };
 });
