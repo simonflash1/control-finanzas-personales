@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useFinance, CategoryType } from "@/context/FinanceContext";
+import { useFinance } from "@/context/FinanceContext";
 import { Settings } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import EditExpenseForm from "@/components/expenses/EditExpenseForm";
@@ -10,29 +10,17 @@ import ManageCategoriesDialog from "@/components/expenses/ManageCategoriesDialog
 import { AddExpenseDialog } from "@/components/expenses/AddExpenseDialog";
 import ExpenseList from "@/components/expenses/ExpenseList";
 import CategorySummary from "@/components/expenses/CategorySummary";
+import { useCategories } from "@/hooks/useCategories";
 
 const Expenses = () => {
   const { toast } = useToast();
-  const { 
-    expenses, 
-    editExpense, 
-    deleteExpense, 
-    getCategoryExpenses,
-    getAllCategories,
-    updateCategory,
-    deleteCategory,
-    getCategoryExpenseCount
-  } = useFinance();
+  const { expenses, editExpense, deleteExpense } = useFinance();
+  const { handleUpdateCategory, handleDeleteCategory, getCategorySummaries, getAllCategories } = useCategories();
   
   const [manageCategoriesOpen, setManageCategoriesOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState<string | null>(null);
 
-  const handleEditSubmit = (id: string, updatedExpense: {
-    amount: number;
-    category: CategoryType;
-    date: string;
-    description: string;
-  }) => {
+  const handleEditSubmit = (id: string, updatedExpense: any) => {
     editExpense(id, updatedExpense);
     setEditingExpense(null);
     toast({
@@ -51,55 +39,12 @@ const Expenses = () => {
     }
   };
 
-  const handleUpdateCategory = (oldCategory: CategoryType, newCategory: string) => {
-    if (getCategoryExpenseCount(oldCategory) > 0) {
-      toast({
-        title: "Error",
-        description: "Cannot modify a category with existing expenses",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    updateCategory(oldCategory, newCategory);
-    toast({
-      title: "Success",
-      description: `Category ${oldCategory} has been updated to ${newCategory}`,
-    });
-  };
-
-  const handleDeleteCategory = (category: CategoryType) => {
-    if (getCategoryExpenseCount(category) > 0) {
-      toast({
-        title: "Error",
-        description: "Cannot delete a category with existing expenses",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    if (window.confirm(`Are you sure you want to delete the ${category} category?`)) {
-      deleteCategory(category);
-      toast({
-        title: "Success",
-        description: `Category ${category} has been deleted`,
-      });
-    }
-  };
-
-  const categoryExpenses = getCategoryExpenses();
-  const categoryItems = Object.entries(categoryExpenses)
-    .map(([category, amount]) => ({
-      category: category as CategoryType,
-      amount,
-    }))
-    .sort((a, b) => a.category.localeCompare(b.category));
+  const categoryItems = getCategorySummaries();
+  const allCategories = getAllCategories();
 
   const expenseBeingEdited = editingExpense 
     ? expenses.find(e => e.id === editingExpense) 
     : null;
-
-  const allCategories = getAllCategories();
 
   return (
     <div className="space-y-6">
@@ -135,7 +80,7 @@ const Expenses = () => {
                 key={item.category}
                 category={item.category}
                 amount={item.amount}
-                transactionCount={getCategoryExpenseCount(item.category)}
+                transactionCount={item.transactionCount}
                 onUpdate={handleUpdateCategory}
                 onDelete={handleDeleteCategory}
               />
@@ -158,7 +103,7 @@ const Expenses = () => {
         categories={allCategories}
         onUpdateCategory={handleUpdateCategory}
         onDeleteCategory={handleDeleteCategory}
-        getCategoryExpenseCount={getCategoryExpenseCount}
+        getCategoryExpenseCount={getCategorySummaries}
       />
     </div>
   );
