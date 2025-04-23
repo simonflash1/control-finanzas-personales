@@ -2,6 +2,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Expense, CategoryType } from './types';
+import { add } from "date-fns";
 
 export const useExpenseOperations = (
   user: any | null, 
@@ -19,7 +20,8 @@ export const useExpenseOperations = (
       .insert([
         { 
           ...expense,
-          user_id: user.id 
+          user_id: user.id,
+          next_due_date: expense.is_recurring ? expense.next_due_date : null,
         }
       ])
       .select();
@@ -92,7 +94,6 @@ export const useExpenseOperations = (
 
   // Get a unique list of all categories used in expenses
   const getAllCategories = (): CategoryType[] => {
-    // In this implementation, we just return all possible categories
     return ['food', 'transport', 'home', 'health', 'shopping', 'entertainment', 'other'];
   };
 

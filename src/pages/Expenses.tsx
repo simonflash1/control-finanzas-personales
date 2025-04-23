@@ -27,6 +27,7 @@ import { Plus, Pencil, Trash, Settings } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import EditExpenseForm from "@/components/expenses/EditExpenseForm";
 import ManageCategoriesDialog from "@/components/expenses/ManageCategoriesDialog";
+import { AddExpenseDialog } from "@/components/expenses/AddExpenseDialog";
 
 const Expenses = () => {
   const { toast } = useToast();
@@ -175,90 +176,7 @@ const Expenses = () => {
             <Settings className="mr-2 h-4 w-4" />
             Manage Categories
           </Button>
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                Add Expense
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <form onSubmit={handleSubmit}>
-                <DialogHeader>
-                  <DialogTitle>Add New Expense</DialogTitle>
-                  <DialogDescription>
-                    Enter the details of your expense below.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="amount">Amount ($)</Label>
-                    <Input
-                      id="amount"
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      value={newExpense.amount}
-                      onChange={(e) =>
-                        setNewExpense({ ...newExpense, amount: e.target.value })
-                      }
-                      placeholder="0.00"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="category">Category</Label>
-                    <Select
-                      value={newExpense.category}
-                      onValueChange={(value: CategoryType) =>
-                        setNewExpense({ ...newExpense, category: value })
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="food">Food</SelectItem>
-                        <SelectItem value="transport">Transport</SelectItem>
-                        <SelectItem value="home">Home</SelectItem>
-                        <SelectItem value="health">Health</SelectItem>
-                        <SelectItem value="shopping">Shopping</SelectItem>
-                        <SelectItem value="entertainment">Entertainment</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="date">Date</Label>
-                    <Input
-                      id="date"
-                      type="date"
-                      value={newExpense.date}
-                      onChange={(e) =>
-                        setNewExpense({ ...newExpense, date: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="description">Description</Label>
-                    <Input
-                      id="description"
-                      value={newExpense.description}
-                      onChange={(e) =>
-                        setNewExpense({ ...newExpense, description: e.target.value })
-                      }
-                      placeholder="Enter description"
-                      required
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button type="submit">Add Expense</Button>
-                </DialogFooter>
-              </form>
-            </DialogContent>
-          </Dialog>
+          <AddExpenseDialog />
         </div>
       </div>
 

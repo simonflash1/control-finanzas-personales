@@ -1,16 +1,22 @@
-
 import { Database } from "@/integrations/supabase/types";
 
 export type CategoryType = Database["public"]["Enums"]["category_type"];
 export type AccountType = Database["public"]["Enums"]["account_type"];
 export type DebtType = Database["public"]["Enums"]["debt_type"];
+export type ExpenseFrequency = Database["public"]["Enums"]["expense_frequency"];
 
 export interface Expense {
   id: string;
   amount: number;
+  base_amount?: number;
   category: CategoryType;
   date: string;
   description: string;
+  is_recurring?: boolean;
+  frequency?: ExpenseFrequency;
+  next_due_date?: string;
+  last_occurrence?: string;
+  parent_expense_id?: string;
 }
 
 export interface Income {

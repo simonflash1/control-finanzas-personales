@@ -90,35 +90,61 @@ export type Database = {
       expenses: {
         Row: {
           amount: number
+          base_amount: number | null
           category: Database["public"]["Enums"]["category_type"]
           created_at: string
           date: string
           description: string | null
+          frequency: Database["public"]["Enums"]["expense_frequency"] | null
           id: string
+          is_recurring: boolean | null
+          last_occurrence: string | null
+          next_due_date: string | null
+          parent_expense_id: string | null
           updated_at: string
           user_id: string | null
         }
         Insert: {
           amount: number
+          base_amount?: number | null
           category: Database["public"]["Enums"]["category_type"]
           created_at?: string
           date?: string
           description?: string | null
+          frequency?: Database["public"]["Enums"]["expense_frequency"] | null
           id?: string
+          is_recurring?: boolean | null
+          last_occurrence?: string | null
+          next_due_date?: string | null
+          parent_expense_id?: string | null
           updated_at?: string
           user_id?: string | null
         }
         Update: {
           amount?: number
+          base_amount?: number | null
           category?: Database["public"]["Enums"]["category_type"]
           created_at?: string
           date?: string
           description?: string | null
+          frequency?: Database["public"]["Enums"]["expense_frequency"] | null
           id?: string
+          is_recurring?: boolean | null
+          last_occurrence?: string | null
+          next_due_date?: string | null
+          parent_expense_id?: string | null
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "expenses_parent_expense_id_fkey"
+            columns: ["parent_expense_id"]
+            isOneToOne: false
+            referencedRelation: "expenses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       incomes: {
         Row: {
@@ -153,6 +179,33 @@ export type Database = {
         }
         Relationships: []
       }
+      music_teachers: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          school: string | null
+          teaching_grades: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          school?: string | null
+          teaching_grades?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          school?: string | null
+          teaching_grades?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -180,6 +233,122 @@ export type Database = {
         }
         Relationships: []
       }
+      student_grades: {
+        Row: {
+          comments: string | null
+          created_at: string
+          grade: number
+          group_id: string
+          id: string
+          period: number
+          student_id: string
+          teacher_id: string
+          updated_at: string
+        }
+        Insert: {
+          comments?: string | null
+          created_at?: string
+          grade: number
+          group_id: string
+          id?: string
+          period: number
+          student_id: string
+          teacher_id: string
+          updated_at?: string
+        }
+        Update: {
+          comments?: string | null
+          created_at?: string
+          grade?: number
+          group_id?: string
+          id?: string
+          period?: number
+          student_id?: string
+          teacher_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_grades_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "student_groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_grades_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_groups: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          teacher_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          teacher_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          teacher_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      students: {
+        Row: {
+          created_at: string
+          first_name: string
+          group_id: string
+          id: string
+          last_name: string
+          teacher_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          first_name: string
+          group_id: string
+          id?: string
+          last_name: string
+          teacher_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          first_name?: string
+          group_id?: string
+          id?: string
+          last_name?: string
+          teacher_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "students_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "student_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -198,6 +367,7 @@ export type Database = {
         | "entertainment"
         | "other"
       debt_type: "loan" | "credit_card"
+      expense_frequency: "one_time" | "monthly" | "variable_monthly"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -324,6 +494,7 @@ export const Constants = {
         "other",
       ],
       debt_type: ["loan", "credit_card"],
+      expense_frequency: ["one_time", "monthly", "variable_monthly"],
     },
   },
 } as const
