@@ -42,6 +42,12 @@ const Expenses = () => {
   const categoryItems = getCategorySummaries();
   const allCategories = getAllCategories();
 
+  // Helper function that correctly extracts just the count for a specific category
+  const getCategoryExpenseCount = (category: string) => {
+    const categoryItem = categoryItems.find(item => item.category === category);
+    return categoryItem ? categoryItem.transactionCount : 0;
+  };
+
   const expenseBeingEdited = editingExpense 
     ? expenses.find(e => e.id === editingExpense) 
     : null;
@@ -103,7 +109,7 @@ const Expenses = () => {
         categories={allCategories}
         onUpdateCategory={handleUpdateCategory}
         onDeleteCategory={handleDeleteCategory}
-        getCategoryExpenseCount={getCategorySummaries}
+        getCategoryExpenseCount={getCategoryExpenseCount}
       />
     </div>
   );
