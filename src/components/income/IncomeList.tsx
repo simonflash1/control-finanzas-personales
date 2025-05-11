@@ -6,7 +6,6 @@ import { DollarSign, Pencil, Trash } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/components/debt/DebtUtils";
-import AdBanner from "@/components/ads/AdBanner";
 
 interface IncomeListProps {
   incomes: Income[];
@@ -16,9 +15,6 @@ interface IncomeListProps {
 }
 
 const IncomeList = ({ incomes, loading, onEdit, onDelete }: IncomeListProps) => {
-  // Add an ad after every 5 items
-  const AD_FREQUENCY = 5;
-  
   return (
     <div className="space-y-4">
       {loading ? (
@@ -45,7 +41,7 @@ const IncomeList = ({ incomes, loading, onEdit, onDelete }: IncomeListProps) => 
           {incomes.length > 0 ? (
             [...incomes]
               .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-              .map((income, index) => (
+              .map((income) => (
                 <div key={income.id}>
                   <div 
                     className="flex items-center justify-between p-3 rounded-lg border"
@@ -71,13 +67,6 @@ const IncomeList = ({ incomes, loading, onEdit, onDelete }: IncomeListProps) => 
                       </Button>
                     </div>
                   </div>
-                  
-                  {/* Insert ad after every AD_FREQUENCY items, but not after the last item */}
-                  {(index + 1) % AD_FREQUENCY === 0 && index < incomes.length - 1 && (
-                    <div className="my-6">
-                      <AdBanner adSlot="3456789012" format="rectangle" />
-                    </div>
-                  )}
                 </div>
               ))
           ) : (
