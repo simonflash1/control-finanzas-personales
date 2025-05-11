@@ -10,12 +10,19 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 import AddExpenseForm from "./AddExpenseForm";
 import RecurringExpenseForm from "./RecurringExpenseForm";
 
 export function AddExpenseDialog() {
+  const [open, setOpen] = useState(false);
+  
+  const handleClose = () => {
+    setOpen(false);
+  };
+  
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
@@ -35,10 +42,10 @@ export function AddExpenseDialog() {
             <TabsTrigger value="recurring">Recurring</TabsTrigger>
           </TabsList>
           <TabsContent value="one-time">
-            <AddExpenseForm />
+            <AddExpenseForm onClose={handleClose} />
           </TabsContent>
           <TabsContent value="recurring">
-            <RecurringExpenseForm onClose={() => document.querySelector<HTMLButtonElement>('[role="dialog"] button[data-state="open"]')?.click()} />
+            <RecurringExpenseForm onClose={handleClose} />
           </TabsContent>
         </Tabs>
       </DialogContent>

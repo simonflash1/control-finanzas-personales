@@ -1,3 +1,4 @@
+
 // src/components/AddExpenseForm.tsx
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -13,12 +14,6 @@ import {
 import { useFinance, CategoryType } from "@/context/FinanceContext";
 import { useToast } from "@/components/ui/use-toast";
 
-interface AddExpenseFormProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSuccess?: () => void;
-}
-
 const AddExpenseForm = ({ onClose }: { onClose?: () => void }) => {
   const { toast } = useToast();
   const { addExpense } = useFinance();
@@ -29,7 +24,7 @@ const AddExpenseForm = ({ onClose }: { onClose?: () => void }) => {
     description: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newExpense.amount || !newExpense.description) {
       toast({
@@ -40,25 +35,38 @@ const AddExpenseForm = ({ onClose }: { onClose?: () => void }) => {
       return;
     }
 
-    addExpense({
-      amount: parseFloat(newExpense.amount),
-      category: newExpense.category,
-      date: newExpense.date,
-      description: newExpense.description,
-    });
+    try {
+      await addExpense({
+        amount: parseFloat(newExpense.amount),
+        category: newExpense.category,
+        date: newExpense.date,
+        description: newExpense.description,
+      });
 
-    setNewExpense({
-      amount: "",
-      category: "food",
-      date: new Date().toISOString().slice(0, 10),
-      description: "",
-    });
-
-    if (onClose) onClose();
-    toast({
-      title: "Success",
-      description: "Expense added successfully",
-    });
+      toast({
+        title: "Success",
+        description: "Expense added successfully",
+      });
+      
+      // Reset form and close modal
+      setNewExpense({
+        amount: "",
+        category: "food",
+        date: new Date().toISOString().slice(0, 10),
+        description: "",
+      });
+      
+      if (onClose) {
+        onClose();
+      }
+    } catch (error) {
+      console.error("Error adding expense:", error);
+      toast({
+        title: "Error",
+        description: "Failed to add expense",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -130,7 +138,7 @@ const AddExpenseForm = ({ onClose }: { onClose?: () => void }) => {
         </div>
 
         <div className="flex justify-end space-x-2 pt-4">
-          <Button variant="outline" onClick={() => onClose && onClose()}>
+          <Button type="button" variant="outline" onClick={() => onClose && onClose()}>
             Cancel
           </Button>
           <Button type="submit">Add Expense</Button>
